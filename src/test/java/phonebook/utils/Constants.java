@@ -14,6 +14,7 @@ public class Constants {
     public static String passForgotAPIUrl = baseUrl + "/api/user/password/recovery";
     public static String passRenewAPIUrl = baseUrl + "/api/user/password";
     public static String contactAPIURL = baseUrl + "/api/contact";
+    public static String addEditPhoneNumberAPIURL = baseUrl + "/api/phone";
 
 
 }

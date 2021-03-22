@@ -12,23 +12,18 @@ import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
 import phonebook.utils.APITestsHelper;
 
-
-import static phonebook.utils.Constants.baseUrl;
-import static phonebook.utils.Constants.contactAPIURL;
-import static phonebook.utils.Constants.loginAPIUrl;
+import static org.junit.Assert.assertEquals;
+import static phonebook.utils.Constants.*;
 
 
 public class CommonAPISteps extends APITestsHelper implements En {
-    private  static Response response;
-    private RequestSpecification request;
-
 
     public CommonAPISteps() {
         //common step to build the client and receive token
         // instance variable token exists in APITestsHelper class
         Given("I have access token", () -> {
-            request  =  RestAssured.given().header("Content-Type",  "application/json");
-            response  =  request.body(createUser()).post(loginAPIUrl);
+
+            response  =  createContentTypeRequest().body(createUser()).post(loginAPIUrl);
             token = response.getHeader("Access-Token");
         });
 
@@ -36,8 +31,16 @@ public class CommonAPISteps extends APITestsHelper implements En {
         // contact data assigned to the existingContact instance variable
         Given("I have existing contact", () -> {
             existingContact = createRandomContact();
-            request.header("Access-Token", token);
-            response = request.body(existingContact).post(contactAPIURL);
+            response = createAuthRequest().body(existingContact).post(contactAPIURL);
+            contactId = response.jsonPath().getString("id");
         });
+
+        // common step to create a phone number before working with it.
+        // phone data assigned to the existingPhoneNumber instance variable
+        Given("I have existing phone number", () -> {
+            existingPhoneNumber = createRandomPhoneNumber();
+            response = createAuthRequest().body(existingPhoneNumber).post(addEditPhoneNumberAPIURL);
+        });
+
     }
 }
