@@ -9,7 +9,7 @@ Feature: Add Contact
     When I make POST request for the endpoint 'contact'
     Then I see status code 200
 
-  @api
+  @api @get_contact
   Scenario: Get contact
 
     Given I have existing contact
